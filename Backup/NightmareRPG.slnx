@@ -10,14 +10,14 @@
     <Platform Name="Win64-arm64ec" />
   </Configurations>
   <Folder Name="/Engine/">
-    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="e351cbde-522e-3642-a8f7-b196fb7ee9fc">
+    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="faec214e-7196-32a2-98c4-f301fc3a83f1">
       <BuildType Project="BuiltWithUnrealBuildTool" />
       <Platform Project="Win64" />
       <Build Project="false" />
     </Project>
   </Folder>
   <Folder Name="/Games/">
-    <Project Path="Intermediate/ProjectFiles/NightmareRPG.vcxproj" Id="1aa85a21-bb0d-320b-8439-7121b5269e9f">
+    <Project Path="Intermediate/ProjectFiles/NightmareRPG.vcxproj" Id="d03540e2-8e69-3076-bb55-0c5b719b5a36">
       <BuildType Solution="DebugGame Editor|Win64" Project="DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64" Project="Win64_arm64_DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64ec" Project="Win64_arm64ec_DebugGame_Editor" />
