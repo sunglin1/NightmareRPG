@@ -1,12 +1,14 @@
+
 #include "EnemyAIController.h"
 #include "EnemyBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Pawn.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
 
 // 생성자
 AEnemyAIController::AEnemyAIController()
 {
-    // Tick 활성화
     PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -28,9 +30,17 @@ void AEnemyAIController::Tick(float DeltaTime)
     // AI가 조종 중인 적 가져오기
     AEnemyBase* Enemy = Cast<AEnemyBase>(GetPawn());
 
-    // 플레이어가 없거나 적이 죽었다면 중단
-    if (!Player || !Enemy || Enemy->GetIsDead())
+    // 적이 없거나 죽었다면 중단
+    if (!Enemy || Enemy->GetIsDead())
     {
+        StopMovement();
+        return;
+    }
+
+    // 플레이어가 없다면 어그로 해제
+    if (!Player)
+    {
+        Enemy->SetHasAggro(false);
         StopMovement();
         return;
     }
@@ -40,6 +50,22 @@ void AEnemyAIController::Tick(float DeltaTime)
         Enemy->GetActorLocation(),
         Player->GetActorLocation()
     );
+
+    // 플레이어 감지 여부 갱신
+    Enemy->SetHasAggro(Distance <= DetectionRange);
+
+    // 공격 Montage 재생 중에는 이동하지 않음
+    if (USkeletalMeshComponent* Mesh = Enemy->GetMesh())
+    {
+        if (UAnimInstance* AnimInstance = Mesh->GetAnimInstance())
+        {
+            if (AnimInstance->IsAnyMontagePlaying())
+            {
+                StopMovement();
+                return;
+            }
+        }
+    }
 
     // 1. 공격 범위 안에 있을 때
     if (Distance <= Enemy->GetAttackRange())

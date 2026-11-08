@@ -29,9 +29,11 @@ public:
     float GetAttackRange() const { return AttackRange; }
     float GetAttackCooldown() const { return AttackCooldown; }
     bool GetIsDead() const { return IsDead; }
+    void SetHasAggro(bool bNewAggro) { bHasAggro = bNewAggro; }
 
 protected:
     virtual void BeginPlay() override;
+    
 
     // ===== Enemy Stats =====
 
@@ -43,6 +45,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Stats")
     float AttackDamage = 10.f;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy State")
+    bool bHasAggro = false;
 
     // ===== Enemy Combat =====
 
