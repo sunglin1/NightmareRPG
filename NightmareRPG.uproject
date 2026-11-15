@@ -26,14 +26,14 @@
 		{
 			"Name": "StateTree",
 			"Enabled": true
-		},
-		{
-			"Name": "GameplayStateTree",
-			"Enabled": true
-		},
-		{
-			"Name": "MovieRenderPipeline",
-			"Enabled": true
-		}
-	]
+        	},
+        	{
+            		"Name": "MovieRenderPipeline",
+            		"Enabled": true
+        	},
+        	{
+            	"Name": "ProceduralVegetationEditor",
+            	"Enabled": true
+        	}
+    	]
 }
