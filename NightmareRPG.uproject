@@ -34,6 +34,10 @@
         	{
             	"Name": "ProceduralVegetationEditor",
             	"Enabled": true
-        	}
+        	},
+			{
+				"Name": "GameplayStateTree",
+				"Enabled": true
+			}
     	]
 }
