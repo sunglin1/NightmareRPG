@@ -4,6 +4,8 @@
 #include "Animation/AnimMontage.h"
 #include "Components/CapsuleComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/DamageType.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -18,6 +20,7 @@ void AEnemyBase::BeginPlay()
 }
 
 // 공격
+
 void AEnemyBase::Attack(AActor* Target)
 {
     if (!Target || IsDead)
@@ -25,15 +28,37 @@ void AEnemyBase::Attack(AActor* Target)
         return;
     }
 
+    // 기존 공격 애니메이션 재생
     PlayRandomMontage(AttackMontages);
+
+    // 공격 범위 확인
+    const float Distance = FVector::Dist(
+        GetActorLocation(),
+        Target->GetActorLocation()
+    );
+
+    if (Distance > AttackRange)
+    {
+        return;
+    }
+
+    // 대상에게 즉시 데미지 적용
+    UGameplayStatics::ApplyDamage(
+        Target,
+        AttackDamage,
+        GetController(),
+        this,
+        UDamageType::StaticClass()
+    );
 
     UE_LOG(
         LogTemp,
         Warning,
-        TEXT("Enemy Attack! Damage: %f"),
+        TEXT("Enemy Attack Damage: %.1f"),
         AttackDamage
     );
 }
+
 
 // 데미지를 받았을 때
 float AEnemyBase::TakeDamage(
