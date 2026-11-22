@@ -18,10 +18,17 @@ public class NightmareRPG : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate",
+			"Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
+
+		// 에디터 빌드 전용: NightmareEditorUtils (위젯 블루프린트 GUID 보정)
+		if (Target.bBuildEditor)
+		{
+			PrivateDependencyModuleNames.AddRange(new string[] { "UMGEditor", "UnrealEd" });
+		}
 
 		PublicIncludePaths.AddRange(new string[] {
 			"NightmareRPG",
