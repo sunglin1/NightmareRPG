@@ -171,6 +171,15 @@ protected:
 	UFUNCTION()
     void TogglePauseMenu();
 
+    // 게임 오버 메뉴
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI|GameOver")
+    TSubclassOf<UUserWidget> GameOverWidgetClass;
+
+    UPROPERTY()
+    UUserWidget* GameOverWidget = nullptr;
+
+    void ShowGameOverMenu();
+
 	// --- 상태 및 탄약/스태미나 변수 (기존 WBP_PlayerHUD 호환용 이름 유지) ---
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	int32 CurrentAmmo = 30;
@@ -278,7 +287,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float DamageCooldown = 1.2f;
 
-	// 사망 후 레벨 재시작까지 대기 시간
+	// 사망 후 게임 오버 메뉴 표시까지 대기 시간 (원래는 재시작 대기 시간이었음)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float DeathRestartDelay = 1.5f;
 

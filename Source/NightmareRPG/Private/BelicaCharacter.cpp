@@ -356,7 +356,7 @@ void ABelicaCharacter::HandlePlayerDeath()
 	}
 	bIsPlayerDead = true;
 
-	UE_LOG(LogTemp, Warning, TEXT("Belica Died! Restarting level in %.1fs"), DeathRestartDelay);
+	UE_LOG(LogTemp, Warning, TEXT("Belica Died! Showing Game Over menu in %.1fs"), DeathRestartDelay);
 
 	StopSprint();
 	StopAim();
@@ -378,8 +378,13 @@ void ABelicaCharacter::HandlePlayerDeath()
 
 	OnPlayerDied();
 
+	//GetWorldTimerManager().SetTimer(
+	//	DeathRestartTimerHandle, this, &ABelicaCharacter::RestartCurrentLevel,
+	//	FMath::Max(DeathRestartDelay, 0.01f), false);
+	// 위가 수정 전 아래가 수정 후
+
 	GetWorldTimerManager().SetTimer(
-		DeathRestartTimerHandle, this, &ABelicaCharacter::RestartCurrentLevel,
+		DeathRestartTimerHandle, this, &ABelicaCharacter::ShowGameOverMenu,
 		FMath::Max(DeathRestartDelay, 0.01f), false);
 }
 
@@ -884,4 +889,40 @@ void ABelicaCharacter::TogglePauseMenu()
 
     // 게임 일시정지
     UGameplayStatics::SetGamePaused(this, true);
+}
+
+
+void ABelicaCharacter::ShowGameOverMenu()
+{
+    APlayerController* PC = Cast<APlayerController>(GetController());
+
+    if (!PC || !GameOverWidgetClass)
+    {
+        return;
+    }
+
+    if (IsValid(GameOverWidget) && GameOverWidget->IsInViewport())
+    {
+        return;
+    }
+
+    GameOverWidget = CreateWidget<UUserWidget>(
+        PC, GameOverWidgetClass
+    );
+
+    if (!GameOverWidget)
+    {
+        return;
+    }
+
+    GameOverWidget->AddToViewport(20);
+
+    FInputModeUIOnly InputMode;
+    InputMode.SetWidgetToFocus(GameOverWidget->TakeWidget());
+    InputMode.SetLockMouseToViewportBehavior(
+        EMouseLockMode::DoNotLock
+    );
+
+    PC->SetInputMode(InputMode);
+    PC->bShowMouseCursor = true;
 }
