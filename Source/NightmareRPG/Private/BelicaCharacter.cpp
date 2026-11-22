@@ -148,6 +148,10 @@ void ABelicaCharacter::BeginPlay()
 			{
 				Subsystem->AddMappingContext(DefaultMappingContext, 0);
 			}
+			if (PauseMappingContext)
+			{
+				Subsystem->AddMappingContext(PauseMappingContext, 1);
+			}
 		}
 	}
 
@@ -456,6 +460,15 @@ void ABelicaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 			EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &ABelicaCharacter::Interact);
 		if (ReloadAction)
 			EnhancedInput->BindAction(ReloadAction, ETriggerEvent::Started, this, &ABelicaCharacter::Reload);
+		if (PauseAction)
+		{
+			EnhancedInput->BindAction(
+				PauseAction,
+				ETriggerEvent::Started,
+				this,
+				&ABelicaCharacter::TogglePauseMenu
+			);
+		}
 	}
 }
 
@@ -814,4 +827,61 @@ void ABelicaCharacter::RecoverStamina()
 	{
 		CurrentStamina = FMath::Clamp(CurrentStamina + 5.0f, 0.0f, MaxStamina);
 	}
+}
+
+
+void ABelicaCharacter::TogglePauseMenu()
+{
+    APlayerController* PC = Cast<APlayerController>(GetController());
+    if (!PC || !PauseMenuWidgetClass)
+    {
+        return;
+    }
+
+    // 이미 일시정지 중이라면 게임 재개
+    if (UGameplayStatics::IsGamePaused(this))
+    {
+        UGameplayStatics::SetGamePaused(this, false);
+
+        PC->SetInputMode(FInputModeGameOnly());
+        PC->bShowMouseCursor = false;
+
+        if (IsValid(PauseMenuWidget))
+        {
+            PauseMenuWidget->RemoveFromParent();
+            PauseMenuWidget = nullptr;
+        }
+
+        return;
+    }
+
+    // 일시정지 메뉴 생성
+    if (!IsValid(PauseMenuWidget) || !PauseMenuWidget->IsInViewport())
+    {
+        PauseMenuWidget = CreateWidget<UUserWidget>(
+            PC, PauseMenuWidgetClass
+        );
+    }
+
+    if (!PauseMenuWidget)
+    {
+        return;
+    }
+
+    // 메뉴 표시
+    if (!PauseMenuWidget->IsInViewport())
+    {
+        PauseMenuWidget->AddToViewport(10);
+    }
+
+    // 마우스 표시 및 UI 입력 활성화
+    FInputModeGameAndUI InputMode;
+    InputMode.SetWidgetToFocus(PauseMenuWidget->TakeWidget());
+    InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+    PC->SetInputMode(InputMode);
+    PC->bShowMouseCursor = true;
+
+    // 게임 일시정지
+    UGameplayStatics::SetGamePaused(this, true);
 }

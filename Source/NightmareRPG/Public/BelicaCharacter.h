@@ -130,6 +130,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputAction* ReloadAction;
 
+    // --- 일시정지 입력 ---
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI|Pause")
+    UInputMappingContext* PauseMappingContext = nullptr;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI|Pause")
+    UInputAction* PauseAction = nullptr;
+
 	// --- 애니메이션 & UI 에셋 ---
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
 	UAnimMontage* FireMontage;
@@ -153,6 +160,16 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
 	UUserWidget* PlayerHUDWidget;
+
+    // --- 일시정지 메뉴 ---
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI|Pause")
+    TSubclassOf<UUserWidget> PauseMenuWidgetClass;
+
+    UPROPERTY()
+    UUserWidget* PauseMenuWidget = nullptr;
+
+	UFUNCTION()
+    void TogglePauseMenu();
 
 	// --- 상태 및 탄약/스태미나 변수 (기존 WBP_PlayerHUD 호환용 이름 유지) ---
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
