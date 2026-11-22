@@ -35,6 +35,12 @@ void AEnemyAIController::Tick(float DeltaTime)
         return;
     }
 
+    // 피격 경직 중에는 이동/공격 중단 (TakeDamage에서 이미 StopMovement 호출됨)
+    if (Enemy->IsStaggered())
+    {
+        return;
+    }
+
     // 적과 플레이어 사이의 거리
     const float Distance = FVector::Dist(
         Enemy->GetActorLocation(),
@@ -60,8 +66,8 @@ void AEnemyAIController::Tick(float DeltaTime)
         }
     }
 
-    // 2. 공격 범위 밖이지만 감지 범위 안에 있을 때
-    else if (Distance <= DetectionRange)
+    // 2. 공격 범위 밖이지만 감지 범위 안에 있을 때 (멀리서 총에 맞은 경우에도 추적)
+    else if (Distance <= DetectionRange || Enemy->IsProvoked())
     {
         const EPathFollowingRequestResult::Type Result =
             MoveToActor(Player, 100.f);
