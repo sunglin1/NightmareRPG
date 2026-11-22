@@ -26,18 +26,34 @@
 		{
 			"Name": "StateTree",
 			"Enabled": true
-        	},
-        	{
-            		"Name": "MovieRenderPipeline",
-            		"Enabled": true
-        	},
-        	{
-            	"Name": "ProceduralVegetationEditor",
-            	"Enabled": true
-        	},
-			{
-				"Name": "GameplayStateTree",
-				"Enabled": true
-			}
-    	]
+		},
+		{
+			"Name": "GameplayStateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "MovieRenderPipeline",
+			"Enabled": true
+		},
+		{
+			"Name": "ProceduralVegetationEditor",
+			"Enabled": true
+		},
+		{
+			"Name": "ModelContextProtocol",
+			"Enabled": true
+		},
+		{
+			"Name": "MCPClientToolset",
+			"Enabled": true
+		},
+		{
+			"Name": "Terminal",
+			"Enabled": true
+		},
+		{
+			"Name": "EditorToolset",
+			"Enabled": true
+		}
+	]
 }
