@@ -600,22 +600,28 @@ void ABelicaCharacter::Interact()
 		return;
 	}
 
-	if (AAmmoPickup* Pickup = Cast<AAmmoPickup>(OverlappingAmmo))
+	AActor* Target = OverlappingAmmo;
+	if (AAmmoPickup* Pickup = Cast<AAmmoPickup>(Target))
 	{
+		// Collect 중 충돌 해제 → EndOverlap에서 겹쳐 있는 다른 픽업으로 대상이 넘어갈 수 있음
 		Pickup->Collect(this);
 	}
 	else
 	{
 		// 레거시 BP 픽업 호환: AmmoAmount 변수를 리플렉션으로 읽음
 		int32 PickupAmount = 30;
-		if (FIntProperty* IntProp = FindFProperty<FIntProperty>(OverlappingAmmo->GetClass(), TEXT("AmmoAmount")))
+		if (FIntProperty* IntProp = FindFProperty<FIntProperty>(Target->GetClass(), TEXT("AmmoAmount")))
 		{
-			PickupAmount = IntProp->GetPropertyValue_InContainer(OverlappingAmmo);
+			PickupAmount = IntProp->GetPropertyValue_InContainer(Target);
 		}
 		AddReserveAmmo(PickupAmount);
-		OverlappingAmmo->Destroy();
+		Target->Destroy();
 	}
-	OverlappingAmmo = nullptr;
+	// 다른 픽업으로 넘어간 대상은 유지
+	if (OverlappingAmmo == Target)
+	{
+		OverlappingAmmo = nullptr;
+	}
 }
 
 void ABelicaCharacter::SetObjective(const FText& Title, const FText& Content)
