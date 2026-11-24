@@ -10,14 +10,14 @@
     <Platform Name="Win64-arm64ec" />
   </Configurations>
   <Folder Name="/Engine/">
-    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="faec214e-7196-32a2-98c4-f301fc3a83f1">
+    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="52c18d4b-a7a3-3e91-984f-43b1c362edf3">
       <BuildType Project="BuiltWithUnrealBuildTool" />
       <Platform Project="Win64" />
       <Build Project="false" />
     </Project>
   </Folder>
   <Folder Name="/Games/">
-    <Project Path="Intermediate/ProjectFiles/NightmareRPG.vcxproj" Id="d03540e2-8e69-3076-bb55-0c5b719b5a36">
+    <Project Path="Intermediate/ProjectFiles/NightmareRPG.vcxproj" Id="a32b5ac2-c40b-3b4c-a25e-b80e1978657c">
       <BuildType Solution="DebugGame Editor|Win64" Project="DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64" Project="Win64_arm64_DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64ec" Project="Win64_arm64ec_DebugGame_Editor" />
@@ -204,9 +204,6 @@
     </Project>
   </Folder>
   <Folder Name="/Rules/">
-    <Project Path="../../../../../Program Files/Epic Games/UE_5.8/Engine/Intermediate/Build/BuildRulesProjects/MarketplaceRules/MarketplaceRules.csproj">
-      <BuildType Project="Development" />
-    </Project>
     <Project Path="../../../../../Program Files/Epic Games/UE_5.8/Engine/Intermediate/Build/BuildRulesProjects/UE5ProgramRules/UE5ProgramRules.csproj">
       <BuildType Project="Development" />
     </Project>
